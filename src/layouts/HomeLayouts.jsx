@@ -1,9 +1,9 @@
+import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import LatestNews from "../components/LatestNews";
 import LiftNavbar from "../components/layOut-component/LiftNavbar";
 import RightNavbar from "../components/layOut-component/RightNavbar";
 import Navbar from "../components/Navbar";
-
 const HomeLayouts = () => {
   return (
     <div className="font-poppins">
@@ -20,7 +20,9 @@ const HomeLayouts = () => {
         <aside className="col-span-3">
           <LiftNavbar></LiftNavbar>
         </aside>
-        <main className="col-span-6">Main content</main>
+        <main className="col-span-6">
+          <Outlet></Outlet>
+        </main>
         <aside className="col-span-3">
           <RightNavbar></RightNavbar>
         </aside>
