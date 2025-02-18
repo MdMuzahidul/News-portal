@@ -1,6 +1,28 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../provider/Authprovider";
 
 const Login = () => {
+  const { logIn, setUser } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogIn = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log({ email, password });
+    logIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="card bg-base-100 w-full max-w-lg p-10 rounded-none shrink-0">
@@ -10,7 +32,7 @@ const Login = () => {
         <div className=" text-[#E7E7E7]">
           <hr />
         </div>
-        <form className="card-body">
+        <form onSubmit={handleLogIn} className="card-body">
           <div className="form-control flex flex-col">
             <label className="label">
               <span className="label-text text-lg mb-2 font-semibold">
@@ -18,6 +40,7 @@ const Login = () => {
               </span>
             </label>
             <input
+              name="email"
               type="email"
               placeholder="email"
               className="input input-bordered w-full"
@@ -31,6 +54,7 @@ const Login = () => {
               </span>
             </label>
             <input
+              name="password"
               type="password"
               placeholder="password"
               className="input input-bordered w-full"

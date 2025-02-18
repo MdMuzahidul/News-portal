@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { FaShareAlt, FaRegEye } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const NewsCard = ({ news }) => {
   return (
@@ -34,7 +35,12 @@ const NewsCard = ({ news }) => {
       {/* Details */}
       <p className="text-gray-700 text-sm mb-4">
         {news.details.slice(0, 150)}...{" "}
-        <span className="text-primary">Read More</span>
+        <Link
+          to={`/news/${news._id}`}
+          className="text-primary"
+        >
+          Read More
+        </Link>
       </p>
 
       {/* Ratings and Views */}
