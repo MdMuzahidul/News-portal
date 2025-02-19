@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/Authprovider";
 
 const Regestion = () => {
-  const { createNewUser, setUser, updateProfile } = useContext(AuthContext);
+  const { createNewUser, setUser, updateUserProfile } = useContext(AuthContext);
   const [error, setError] = useState({});
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const Regestion = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        updateProfile({ displayName: name, photoURL: photo })
+        updateUserProfile({ displayName: name, photoURL: photo })
           .then(() => {
             navigate("/");
           })
