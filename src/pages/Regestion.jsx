@@ -1,14 +1,20 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/Authprovider";
 
 const Regestion = () => {
-  const { createNewUser, setUser } = useContext(AuthContext);
+  const { createNewUser, setUser, updateProfile } = useContext(AuthContext);
+  const [error, setError] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmite = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("name");
+    if (name.length < 5) {
+      setError({ ...error, name: "name must be more the 5 charater" });
+      return;
+    }
     const photo = formData.get("photo-url");
     const email = formData.get("email");
     const password = formData.get("password");
@@ -17,6 +23,13 @@ const Regestion = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        updateProfile({ displayName: name, photoURL: photo })
+          .then(() => {
+            navigate("/");
+          })
+          .catch((err) => {
+            alert(err.message);
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -48,6 +61,13 @@ const Regestion = () => {
               required
             />
           </div>
+          {error.name && (
+            <label className="label">
+              <span className="label-text text-lg mb-2 font-semibold">
+                {error.name}
+              </span>
+            </label>
+          )}
           <div className="form-control flex flex-col">
             <label className="label">
               <span className="label-text text-lg mb-2 font-semibold">
@@ -88,6 +108,8 @@ const Regestion = () => {
               placeholder="Enter your password"
               className="input input-bordered w-full"
               required
+              pattern=".{6,}" // Pattern to ensure at least 6 characters
+              title="Password must be at least 6 characters long"
             />
           </div>
           <div className="form-control mt-4">

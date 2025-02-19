@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/Authprovider";
 
 const Login = () => {
   const { logIn, setUser } = useContext(AuthContext);
+  const [error, setError] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,8 +19,8 @@ const Login = () => {
         setUser(user);
         navigate(location?.state ? location.state : "/");
       })
-      .catch((error) => {
-        alert(error.message);
+      .catch((err) => {
+        setError({ ...error, login: err.code });
       });
   };
 
@@ -47,6 +48,13 @@ const Login = () => {
               required
             />
           </div>
+          {error.login && (
+            <label className="label">
+              <span className="label-text text-lg mb-2 font-semibold">
+                {error.login}
+              </span>
+            </label>
+          )}
           <div className="form-control flex flex-col">
             <label className="label">
               <span className="label-text text-lg mb-2 font-semibold">
